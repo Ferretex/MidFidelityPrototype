@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>user click Test</title>
+        <meta charset="utf-8" />
+        <script src="https://aframe.io/releases/1.4.1/aframe.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@fb96ab2/dist/aframe-extras.min.js"></script>
+        <!-- //VERY HANDY! https://socket.io/docs/v3/emit-cheatsheet/  -->
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+
+    <body>
+        <a-scene experience-manager background="color:rgb(0, 255, 255);">
+            
+            <a-assets>
+                <a-asset-item id="floorModel" src="assets/AntColonyNvaMesh.glb" response-type="arraybuffer"></a-asset-item>
+                <a-asset-item id="antColonyModel" src="assets/AntColonyTest.glb" response-type="arraybuffer"></a-asset-item>
+            </a-assets>
+
+            <!-- Enivroment -->
+
+
+            <a-entity id="colonyWalls" gltf-model="#antColonyModel" shadow></a-entity>
+
+            <!-- NavMesh -->
+            <a-entity id="walkMesh" class="navmesh" gltf-model="#floorModel" position="0 0 0" nav-mesh visible="false"> </a-entity>
+
+            <!-- Player -->
+            <a-entity id="rig" movement-controls="controls: keyboard, touch; speed: 0.5; constrainToNavMesh: true;" position="0 0 0">
+                <a-entity id="player" position="0 1.6 0" camera="userHeight: 1.6" look-controls
+                    animation__1="property:camera.zoom; from: 1; to: 1.1; dur: 50; startEvents: hitAnim"
+                    animation__2="property:camera.zoom; from: 1.1; to: 1; dur: 50; startEvents: animationcomplete__1">
+                    <a-entity id="light" position="0 0 0" light="type:spot; intensity:1.4; castShadow:true; shadowBias: -0.05; penumbra:0.1;"></a-entity>
+                    <a-entity cursor="rayOrigin:mouse;" raycaster="far:20; interval:200; objects:.interactive"></a-entity>
+                    <a-entity id="hitEffect" geometry="primitive:plane; width:1; height:1;" material="color:red; roughness: 1; shader: flat; opacity: 0;" position="0 0 -0.1"
+                        animation__1="property:material.opacity; from: 0; to: 0.5; dur: 50; startEvents: hitAnim"
+                        animation__2="property:material.opacity; from: 0.5; to: 0; dur: 50; startEvents: animationcomplete__1"> </a-entity>
+                </a-entity>
+            </a-entity>
+
+            <!-- <a-entity camera="fov: 25;" position="0 80 -20" rotation="-90 -90 0"></a-entity> -->
+
+        </a-scene>
+    </body>
+</html>
